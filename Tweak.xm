@@ -8,66 +8,55 @@ CLLocation *userLocation;
 
 - (void)configureColorPalette {
 
-NSDate *sunrise = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sunrise"];
-NSDate *sunset = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sunset"];
-
-if (sunrise && sunset) {
-
-NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-formatter.dateFormat = @"H";
-
-NSInteger nowHour = [[formatter stringFromDate:[[NSDate alloc] init]] integerValue];
-NSInteger sunriseHour = [[formatter stringFromDate:sunrise] integerValue];
-NSInteger sunsetHour = [[formatter stringFromDate:sunset] integerValue];
-
-// NSLog(@"NOWHOUR: %li",(long)nowHour);
-// NSLog(@"SUNRISEHOUR: %li",(long)sunriseHour);
-// NSLog(@"SUNSETHOUR: %li",(long)sunsetHour);
-
-NSString *palette;
-
-if (nowHour > sunsetHour || nowHour < sunriseHour) {
-palette = @"dark";
-} else {
-palette = @"standard";
-}
-
-// NSLog(@"SELECTEDPALETTE: %@",palette);
-[[NSUserDefaults standardUserDefaults] setObject:palette forKey:@"TFNTwitterColorSettings.colorPaletteName"];
-// [[NSUserDefaults standardUserDefaults] setObject:@"dark" forKey:@"TFNTwitterColorSettings.colorPaletteName"];
+	NSDate *sunrise = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sunrise"];
+	NSDate *sunset = [[NSUserDefaults standardUserDefaults] objectForKey:@"Sunset"];
 	
-} else {
+	if (sunrise && sunset) {
 	
-	locationManager = [[CLLocationManager alloc] init];
-	locationManager.delegate = (id)self;
-	locationManager.distanceFilter = kCLDistanceFilterNone;
-	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"H";
+		
+		NSInteger nowHour = [[formatter stringFromDate:[[NSDate alloc] init]] integerValue];
+		NSInteger sunriseHour = [[formatter stringFromDate:sunrise] integerValue];
+		NSInteger sunsetHour = [[formatter stringFromDate:sunset] integerValue];
+		
+		// NSLog(@"NOWHOUR: %li",(long)nowHour);
+		// NSLog(@"SUNRISEHOUR: %li",(long)sunriseHour);
+		// NSLog(@"SUNSETHOUR: %li",(long)sunsetHour);
+		
+		NSString *palette;
+		
+		if (nowHour > sunsetHour || nowHour < sunriseHour) {
+			palette = @"dark";
+		} else {
+			palette = @"standard";
+		}
+		
+		// NSLog(@"SELECTEDPALETTE: %@",palette);
+		[[NSUserDefaults standardUserDefaults] setObject:palette forKey:@"TFNTwitterColorSettings.colorPaletteName"];
 	
-	[locationManager requestWhenInUseAuthorization];
+	} else {
 	
-	[locationManager startUpdatingLocation];
+		locationManager = [[CLLocationManager alloc] init];
+		locationManager.delegate = (id)self;
+		locationManager.distanceFilter = kCLDistanceFilterNone;
+		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		
+		[locationManager requestWhenInUseAuthorization];
+		[locationManager startUpdatingLocation];
+		
+	}
 	
-}
-
-%orig;
-
-// 
-// id sharedSettings = [%c(TFNTwitterColorSettings) performSelector:@selector(sharedSettings)];
-// NSArray *available = [sharedSettings performSelector:@selector(availableColorPalettes)];
-// id current = [sharedSettings performSelector:@selector(currentColorPalette)];
-	// 
-	// current = available[1];
-	// 
-	// [sharedSettings performSelector:@selector(applyCurrentColorPalette)];
+	%orig;
 	
 }
 
 %new(v@:)
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 
-if (userLocation) {
+	if (userLocation) {
 	return;
-}
+	}
 
 	userLocation = [locations lastObject];
 	[manager stopUpdatingLocation];
