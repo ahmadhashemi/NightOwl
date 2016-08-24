@@ -8,7 +8,7 @@ formatter.dateFormat = @"H";
 NSString *hourString = [formatter stringFromDate:[[NSDate alloc] init]];
 NSInteger hour = [hourString integerValue];
 
-if (hour > 20 && hour < 6) {
+if (hour > 20 || hour < 6) {
 	[[NSUserDefaults standardUserDefaults] setObject:@"dark" forKey:@"TFNTwitterColorSettings.colorPaletteName"];
 } else {
 	[[NSUserDefaults standardUserDefaults] setObject:@"standard" forKey:@"TFNTwitterColorSettings.colorPaletteName"];
