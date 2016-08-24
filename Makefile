@@ -1,7 +1,7 @@
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = NightTime
-NightTime_FILES = Tweak.xm
+TWEAK_NAME = NightOwl
+NightOwl_FILES = Tweak.xm
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

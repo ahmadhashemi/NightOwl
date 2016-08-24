@@ -1,9 +1,9 @@
-Package: com.ahmad.nighttime
-Name: NightTime
+Package: com.ahmad.nightowl
+Name: NightOwl
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: AutoEnable Twitter dark theme based on local sunset and sunrise time
 Maintainer: Ahmad
 Author: Ahmad
 Section: Tweaks
