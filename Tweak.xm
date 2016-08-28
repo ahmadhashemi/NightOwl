@@ -28,19 +28,20 @@ CLLocation *userLocation;
 		NSInteger sunriseHour = [[formatter stringFromDate:sunrise] integerValue];
 		NSInteger sunsetHour = [[formatter stringFromDate:sunset] integerValue];
 		
-		//NSLog(@"NOWHOUR: %li",(long)nowHour);
-		//NSLog(@"SUNRISEHOUR: %li",(long)sunriseHour);
-		//NSLog(@"SUNSETHOUR: %li",(long)sunsetHour);
+		NSLog(@"NOWHOUR: %li",(long)nowHour);
+		NSLog(@"SUNRISEHOUR: %li",(long)sunriseHour);
+		NSLog(@"SUNSETHOUR: %li",(long)sunsetHour);
 		
 		NSString *palette;
 		
-		if (nowHour >= sunsetHour || nowHour <= sunriseHour) {
+		if (nowHour > sunsetHour || nowHour < sunriseHour) {
 			palette = @"dark";
 		} else {
 			palette = @"standard";
 		}
 		
-		////NSLog(@"SELECTEDPALETTE: %@",palette);
+		NSLog(@"SELECTEDPALETTE: %@",palette);
+		
 		[[NSUserDefaults standardUserDefaults] setObject:palette forKey:@"TFNTwitterColorSettings.colorPaletteName"];
 		
 		[[%c(TFNTwitterColorSettings) sharedSettings] applyCurrentColorPalette];
@@ -52,8 +53,8 @@ CLLocation *userLocation;
 	double interval = [[NSUserDefaults standardUserDefaults] doubleForKey:@"SuntimeUpdate"];
 	double check = [NSDate timeIntervalSinceReferenceDate];
 	
-	////NSLog(@"UPDATE: %f",interval);
-	//NSLog(@"NOW: %f",check);
+	NSLog(@"UPDATE: %f",interval);
+	NSLog(@"NOW: %f",check);
 	
 	if (check - interval > 7*24*60*60) {
 		[self getLocationAndSuntime];
@@ -84,7 +85,7 @@ CLLocation *userLocation;
 	userLocation = [locations lastObject];
 	[manager stopUpdatingLocation];
 
-	//NSLog(@"USERLOCATION: %f %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
+	NSLog(@"USERLOCATION: %f %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
 	
 	[self getSuntimeForLocation:userLocation];
 
@@ -95,7 +96,7 @@ CLLocation *userLocation;
 	
 	NSString *urlString = [[NSString alloc] initWithFormat:@"https://ahmadhashemi.com/tweaks/suntime.php?lat=%f&lng=%f",location.coordinate.latitude,location.coordinate.longitude];
 	
-	// //NSLog(@"URLSTRING: %@",urlString);
+	NSLog(@"URLSTRING: %@",urlString);
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
 	[[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -103,11 +104,9 @@ CLLocation *userLocation;
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (error) {
-				//NSLog(@"ERROR: %@",error.localizedDescription);
+				NSLog(@"ERROR: %@",error.localizedDescription);
 				return;
 			}
-			
-			// //NSLog(@"GOTDATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 			
 			NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
 			
@@ -125,9 +124,9 @@ CLLocation *userLocation;
 			double interval = [NSDate timeIntervalSinceReferenceDate];
 			[[NSUserDefaults standardUserDefaults] setDouble:interval forKey:@"SuntimeUpdate"];
 			
-			//NSLog(@"SUNRISEHOUR: %@",sunrise);
-			//NSLog(@"SUNSETHOUR: %@",sunset);
-			//NSLog(@"NOW: %@",[[NSDate alloc] init]);
+			NSLog(@"SUNRISEHOUR: %@",sunrise);
+			NSLog(@"SUNSETHOUR: %@",sunset);
+			NSLog(@"NOW: %@",[[NSDate alloc] init]);
 			
 			[self decideColorPalette];
 			

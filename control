@@ -1,7 +1,7 @@
 Package: com.ahmad.nightowl
 Name: NightOwl
 Depends: mobilesubstrate
-Version: 1.0.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: AutoEnable Twitter dark theme based on local sunset and sunrise time
 Maintainer: Ahmad
